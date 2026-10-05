@@ -1,8 +1,8 @@
-// Nom : Étudiant
-// Numéro étudiant : 000000
+// Nom : Ahmet Ibrahima Diene
+// Numéro étudiant : 300157381
 // Cours : INF1083
 // Devoir : 03
-// Date : 2026-10-04
+// Date : 10/04/2026
 // Description : Classes, objets et constructeurs en C#
 
 public class Etudiant

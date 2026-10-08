@@ -1,0 +1,29 @@
+Nom : Ahmet Ibrahima Diene
+Numéro étudiant : 300157381
+Laboratoire : Semaine 04 - Ma première page HTML et CSS
+
+Questions de compréhension
+
+1. Quelle est la différence entre <h1> et <p>?
+Réponse : <h1> est le titre principal de la page (texte gros et en gras), alors que <p> est un paragraphe de texte normal.
+
+2. Quel élément HTML permet de créer un bouton?
+Réponse : L'élément <button>.
+
+3. Quel élément permet d'afficher une image?
+Réponse : L'élément <img>, avec l'attribut src pour le fichier et alt pour la description.
+
+4. Quel élément permet de créer un lien?
+Réponse : L'élément <a>, avec l'attribut href qui indique l'adresse du lien.
+
+5. À quoi sert CSS?
+Réponse : CSS sert à modifier l'apparence des éléments HTML : couleurs, police, tailles, espacements, bordures, etc.
+
+6. Que fait la propriété background-color?
+Réponse : Elle change la couleur de fond d'un élément.
+
+7. Que fait la propriété color?
+Réponse : Elle change la couleur du texte d'un élément.
+
+8. Dans le CSS suivant, quel élément sera modifié?  button { color: white; }
+Réponse : Les éléments <button> : le texte des boutons sera blanc.

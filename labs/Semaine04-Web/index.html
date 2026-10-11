@@ -30,6 +30,16 @@
     <h2>Votre joueur préféré</h2>
     <label for="joueur">Nom du joueur :</label>
     <input type="text" id="joueur">
-    <button>Envoyer</button>
+    <button onclick="envoyer()">Envoyer</button>
+    <p id="message"></p>
+
+    <script>
+        function envoyer() {
+            const nom = document.getElementById("joueur").value.trim();
+            document.getElementById("message").textContent = nom
+                ? "Merci! Ton joueur préféré est " + nom + "."
+                : "Écris le nom d'un joueur avant d'envoyer.";
+        }
+    </script>
 </body>
 </html>

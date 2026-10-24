@@ -1,0 +1,16 @@
+Laboratoire 05 - Ahmet Ibrahima Diene (300157381)
+
+Fichiers créés ou modifiés dans le projet Labo05_Todo :
+
+1. Components/Pages/Todo.razor  (NOUVEAU)
+   - En-tête obligatoire
+   - Route @page "/todo" et titre personnalisé
+   - Champ <input> lié à nouvelleTache avec @bind
+   - Bouton Ajouter (@onclick="Ajouter") avec refus des textes vides ou composés d'espaces
+   - Bouton Réinitialiser (@onclick="Reinitialiser") qui restaure l'état initial
+   - Bloc @code
+
+2. Components/Layout/NavMenu.razor  (MODIFIÉ)
+   - Ajout d'un lien « Todo » vers la page /todo
+
+Tous les autres fichiers sont ceux générés par le modèle Blazor Web App.

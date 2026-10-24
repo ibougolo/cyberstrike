@@ -1,0 +1,67 @@
+Nom : Ahmet Ibrahima Diene
+Numéro étudiant : 300157381
+Cours : INF1083
+Laboratoire : 05 - Premiers pas avec Blazor et premier Todo
+Date : 24/10/2026
+
+Projet : Labo05_Todo (Blazor Web App, .NET 9, interactivité Server, globale, sans authentification)
+
+------------------------------------------------------------
+Partie A - Le trajet d'un clic
+------------------------------------------------------------
+Quand je clique sur le bouton Ajouter, le navigateur (le client) envoie l'événement
+au serveur .NET par la connexion SignalR ouverte par Blazor. Sur le serveur, la
+méthode C# Ajouter() s'exécute et change la variable tacheAffichee. Blazor calcule
+ce qui a changé dans l'interface et renvoie seulement ces changements au navigateur,
+qui met à jour la page sans la recharger.
+
+------------------------------------------------------------
+Partie F - Tests
+------------------------------------------------------------
+[OK] Ouvrir /                 -> La page d'accueil s'affiche.
+[OK] Ouvrir /todo             -> Le composant Todo.razor s'affiche (aussi par le lien Todo du menu).
+[OK] Saisir une tâche         -> La variable nouvelleTache reçoit le texte grâce à @bind.
+[OK] Cliquer sur Ajouter      -> La tâche apparaît sans rechargement manuel et le champ est vidé.
+[OK] Ajouter un texte vide    -> Aucune tâche n'est créée, un message demande d'écrire une tâche
+                                 (testé aussi avec seulement des espaces).
+[OK] Cliquer sur Réinitialiser -> La tâche revient à « Aucune tâche » et le champ est vide.
+
+------------------------------------------------------------
+Défi de débogage
+------------------------------------------------------------
+Prédiction : si la route devient @page "/mes-taches", l'adresse /todo ne trouvera plus
+aucun composant.
+Résultat : /todo ne s'affiche plus, le serveur répond « page introuvable » (code 404).
+La page fonctionne seulement à l'adresse /mes-taches.
+Explication : la directive @page associe une route à un composant. Le composant
+Routes.razor cherche le composant dont la route correspond à l'adresse demandée.
+Comme plus aucun composant ne déclare la route /todo, aucun composant n'est trouvé.
+J'ai ensuite rétabli la route @page "/todo".
+
+------------------------------------------------------------
+Questions de compréhension
+------------------------------------------------------------
+1. Quel est le rôle du navigateur client dans cette application?
+Réponse : Le navigateur affiche l'interface (le HTML et le CSS) et transmet les actions
+de l'utilisateur, comme les clics et la saisie, au serveur.
+
+2. Quel est le rôle du serveur .NET?
+Réponse : Le serveur .NET exécute le code C# des composants, garde l'état des variables
+(nouvelleTache, tacheAffichee), prépare l'interface et envoie les mises à jour au navigateur.
+
+3. Pourquoi Todo.razor se trouve-t-il dans Components/Pages?
+Réponse : Parce que c'est une page routable : il déclare une route avec @page. Le dossier
+Components/Pages regroupe les composants qu'on peut ouvrir directement par une adresse.
+
+4. Que produit la directive @page "/todo"?
+Réponse : Elle rend le composant accessible à l'adresse /todo. Quand on visite /todo,
+le routeur affiche le composant Todo.razor.
+
+5. Quelle ligne relie le bouton à la méthode C#?
+Réponse : <button type="button" @onclick="Ajouter">Ajouter</button>
+L'attribut @onclick="Ajouter" appelle la méthode Ajouter() lors du clic.
+
+6. Pourquoi l'affichage change-t-il sans recharger manuellement toute la page?
+Réponse : Avec Blazor Interactive Server, le navigateur reste connecté au serveur. Après
+l'exécution de la méthode, Blazor compare l'ancienne et la nouvelle interface et envoie
+seulement les parties modifiées. Le navigateur met à jour ces parties sans recharger la page.

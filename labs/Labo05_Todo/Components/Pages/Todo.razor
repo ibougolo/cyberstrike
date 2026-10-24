@@ -1,0 +1,48 @@
+@*
+Nom : Ahmet Ibrahima Diene
+Numéro étudiant : 300157381
+Cours : INF1083
+Laboratoire : 05
+Date : 24/10/2026
+Description : Premiers pas avec Blazor - page Todo qui gère une seule tâche
+*@
+
+@page "/todo"
+
+<PageTitle>Ma tâche du jour</PageTitle>
+
+<h1>Ma tâche du jour</h1>
+<p>Écrivez la tâche que vous voulez accomplir aujourd'hui, puis cliquez sur Ajouter.</p>
+
+<input type="text" @bind="nouvelleTache" placeholder="Entrez une tâche" />
+<button type="button" @onclick="Ajouter">Ajouter</button>
+<button type="button" @onclick="Reinitialiser">Réinitialiser</button>
+
+<p>@message</p>
+<p><strong>Tâche :</strong> @tacheAffichee</p>
+
+@code {
+    string nouvelleTache = "";
+    string tacheAffichee = "Aucune tâche";
+    string message = "";
+
+    void Ajouter()
+    {
+        if (string.IsNullOrWhiteSpace(nouvelleTache))
+        {
+            message = "Veuillez écrire une tâche avant d'ajouter.";
+            return;
+        }
+
+        tacheAffichee = nouvelleTache.Trim();
+        nouvelleTache = "";
+        message = "";
+    }
+
+    void Reinitialiser()
+    {
+        nouvelleTache = "";
+        tacheAffichee = "Aucune tâche";
+        message = "";
+    }
+}

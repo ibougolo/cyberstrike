@@ -1,0 +1,88 @@
+Nom : Ahmet Ibrahima Diene
+Numéro étudiant : 300157381
+Cours : INF1083 - Laboratoire 07 : Suivi d'habitudes avec composants Razor
+Projet et version .NET : Labo07_Habitudes, Blazor Web App, .NET 9 (net9.0),
+                         interactivité Server appliquée globalement dans App.razor
+
+------------------------------------------------------------
+Fonctions terminées
+------------------------------------------------------------
+- Models/Habitude.cs : propriétés Id, Nom et EstFaite.
+- Components/Pages/Habitudes.razor (route /habitudes) : possède la List<Habitude>,
+  OnInitialized crée trois habitudes distinctes (Id 1, 2, 3).
+- Components/HabitudeItem.razor : affiche UNE habitude reçue avec [Parameter]
+  et signale les actions avec deux EventCallback<Habitude> (OnBasculer, OnSupprimer).
+- Ajout d'une habitude avec @bind et refus d'un texte vide ou composé d'espaces.
+- Cocher / décocher une habitude, suppression de la bonne habitude.
+- Progression affichée sous la forme « 2 sur 4, 50 pour cent ».
+- Message lorsque la liste est vide.
+- Lien « Habitudes » ajouté dans Components/Layout/NavMenu.razor.
+
+Décisions :
+- Un compteur prochainId donne un identifiant unique à chaque nouvelle habitude
+  (il n'est jamais réutilisé, même après une suppression).
+- @key="habitude.Id" dans la boucle aide Blazor à associer chaque composant enfant
+  à la bonne habitude quand la liste change.
+- Une habitude cochée est barrée (HabitudeItem.razor.css) pour mieux voir son état.
+
+------------------------------------------------------------
+Tests T1 à T7 (réalisés dans le navigateur)
+------------------------------------------------------------
+T1 Ouvrir /habitudes        -> OK : Boire de l'eau, Lire 20 minutes, Marcher dehors; 0 sur 3, 0 pour cent
+T2 Cocher une habitude       -> OK : la case est cochée, progression 1 sur 3, 33 pour cent
+T3 Ajouter un nom valide     -> OK : « Méditer 10 minutes » apparaît, 1 sur 4, 25 pour cent, champ vidé
+T4 Ajouter un texte vide     -> OK : toujours 4 habitudes, message « Veuillez écrire le nom d'une habitude. »
+T5 Supprimer une habitude    -> OK : seule « Lire 20 minutes » disparaît
+T6 Supprimer tous les éléments -> OK : message de liste vide, 0 sur 0, 0 pour cent;
+                                après un nouvel ajout, la liste revient
+T7 Recharger la page         -> OK : retour aux trois habitudes initiales, 0 sur 3
+
+------------------------------------------------------------
+Défi de débogage
+------------------------------------------------------------
+- Avec « protected override void OnInitialize() », le projet ne compile pas :
+  erreur CS0115, aucune méthode appropriée à substituer.
+- Sans le mot override, le projet compile, mais la page affiche la liste vide
+  et « 0 sur 0, 0 pour cent ».
+Explication : Blazor appelle seulement la méthode du cycle de vie qui s'appelle
+exactement OnInitialized. OnInitialize est une autre méthode que Blazor ne connaît
+pas, donc elle n'est jamais appelée et la collection n'est pas remplie.
+J'ai ensuite rétabli « protected override void OnInitialized() ».
+
+------------------------------------------------------------
+Problèmes connus
+------------------------------------------------------------
+- Les données sont seulement en mémoire : elles reviennent à l'état initial quand
+  on recharge la page (comportement attendu, voir T7).
+- Aucun autre problème connu.
+
+------------------------------------------------------------
+Réponses aux six questions de compréhension
+------------------------------------------------------------
+1. À quel moment OnInitialized s'exécute-t-il et quel état prépare-t-il dans votre page?
+OnInitialized s'exécute une fois, quand le composant Habitudes est créé, avant son
+premier affichage. Il ne s'exécute pas à chaque clic. Dans ma page, il remplit la
+liste habitudes avec trois habitudes de départ et prépare le prochain identifiant.
+
+2. Pourquoi la collection reste-t-elle dans Habitudes.razor plutôt que dans HabitudeItem.razor?
+Parce que la page parent possède l'état de toute l'application : elle ajoute,
+supprime et calcule la progression sur toute la liste. HabitudeItem n'affiche
+qu'une seule habitude, il n'a pas besoin de connaître les autres.
+
+3. Dans quel sens la valeur du paramètre Habitude circule-t-elle?
+Du parent vers l'enfant. Habitudes.razor passe chaque objet de la liste à un
+HabitudeItem avec Habitude="habitude".
+
+4. Que transmet EventCallback<Habitude> au parent?
+Il transmet l'objet Habitude sur lequel l'utilisateur a agi (cocher ou supprimer).
+Le parent reçoit cet objet dans BasculerEtat ou SupprimerHabitude et sait donc
+quelle habitude modifier.
+
+5. Pourquoi chaque habitude doit-elle posséder un identifiant différent?
+Pour distinguer chaque habitude, même si deux ont le même nom. L'Id permet de
+cibler le bon objet et sert de clé (@key) pour que Blazor associe chaque composant
+à la bonne habitude quand la liste change.
+
+6. Comment votre calcul évite-t-il une division par zéro?
+Avant de diviser, Pourcentage vérifie si habitudes.Count vaut 0. Si la liste est
+vide, il retourne directement 0; sinon il divise NombreFaites par habitudes.Count.

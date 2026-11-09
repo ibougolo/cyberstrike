@@ -1,0 +1,81 @@
+@*
+Nom : Ahmet Ibrahima Diene
+Numéro étudiant : 300157381
+Cours : INF1083 - Laboratoire 07
+Description : Page parent qui possède la collection d'habitudes, les opérations et la progression
+*@
+
+@page "/habitudes"
+@using Labo07_Habitudes.Models
+
+<PageTitle>Suivi d'habitudes</PageTitle>
+<h1>Suivi d'habitudes</h1>
+
+<p><strong>Progression :</strong> @NombreFaites sur @habitudes.Count, @Pourcentage pour cent</p>
+
+<input @bind="nouvelleHabitude" placeholder="Nouvelle habitude" />
+<button type="button" @onclick="AjouterHabitude">Ajouter</button>
+<p>@message</p>
+
+@if (habitudes.Count == 0)
+{
+    <p>Aucune habitude pour le moment. Ajoutez-en une ci-dessus.</p>
+}
+else
+{
+    @foreach (var habitude in habitudes)
+    {
+        <HabitudeItem @key="habitude.Id"
+                      Habitude="habitude"
+                      OnBasculer="BasculerEtat"
+                      OnSupprimer="SupprimerHabitude" />
+    }
+}
+
+@code {
+    private List<Habitude> habitudes = [];
+    private string nouvelleHabitude = string.Empty;
+    private string message = string.Empty;
+    private int prochainId = 1;
+
+    protected override void OnInitialized()
+    {
+        habitudes =
+        [
+            new() { Id = 1, Nom = "Boire de l'eau" },
+            new() { Id = 2, Nom = "Lire 20 minutes" },
+            new() { Id = 3, Nom = "Marcher dehors" }
+        ];
+        prochainId = 4;
+    }
+
+    private void AjouterHabitude()
+    {
+        if (string.IsNullOrWhiteSpace(nouvelleHabitude))
+        {
+            message = "Veuillez écrire le nom d'une habitude.";
+            return;
+        }
+
+        habitudes.Add(new Habitude { Id = prochainId, Nom = nouvelleHabitude.Trim() });
+        prochainId++;
+        nouvelleHabitude = string.Empty;
+        message = string.Empty;
+    }
+
+    private void BasculerEtat(Habitude habitude)
+    {
+        habitude.EstFaite = !habitude.EstFaite;
+    }
+
+    private void SupprimerHabitude(Habitude habitude)
+    {
+        habitudes.Remove(habitude);
+    }
+
+    private int NombreFaites => habitudes.Count(h => h.EstFaite);
+
+    private int Pourcentage => habitudes.Count == 0
+        ? 0
+        : (int)Math.Round((double)NombreFaites / habitudes.Count * 100);
+}

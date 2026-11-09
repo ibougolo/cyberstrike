@@ -1,0 +1,28 @@
+@*
+Nom : Ahmet Ibrahima Diene
+Numéro étudiant : 300157381
+Cours : INF1083 - Laboratoire 07
+Description : Composant enfant qui affiche une seule habitude et signale les actions au parent
+*@
+
+@using Labo07_Habitudes.Models
+
+<div class="habitude-item">
+    <input type="checkbox" checked="@Habitude.EstFaite" @onchange="Basculer" />
+    <span class="@(Habitude.EstFaite ? "faite" : "")">@Habitude.Nom</span>
+    <button type="button" @onclick="Supprimer">Supprimer</button>
+</div>
+
+@code {
+    [Parameter, EditorRequired]
+    public Habitude Habitude { get; set; } = default!;
+
+    [Parameter]
+    public EventCallback<Habitude> OnBasculer { get; set; }
+
+    [Parameter]
+    public EventCallback<Habitude> OnSupprimer { get; set; }
+
+    private Task Basculer() => OnBasculer.InvokeAsync(Habitude);
+    private Task Supprimer() => OnSupprimer.InvokeAsync(Habitude);
+}

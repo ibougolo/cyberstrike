@@ -1,0 +1,11 @@
+.habitude-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 6px 0;
+}
+
+.faite {
+    text-decoration: line-through;
+    color: gray;
+}
